@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 
-
 class NamePage extends StatefulWidget {
   NamePage({Key? key}) : super(key: key);
 
@@ -16,6 +15,7 @@ class _NamePageState extends State<NamePage> {
   Names names = Names();
   String name = " ";
   List<String> nameslist = [];
+  var inputcontroller = TextEditingController();
   var prefs = SharedPreferences.getInstance();
 
   @override
@@ -72,6 +72,7 @@ class _NamePageState extends State<NamePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       onChanged: (value) => {name = value},
+                      controller: inputcontroller,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         fillColor: Colors.black,
@@ -79,55 +80,76 @@ class _NamePageState extends State<NamePage> {
                         hintText: "name",
                         hintStyle: TextStyle(color: Colors.white),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(2),borderSide: BorderSide(color: Colors.white, width: 1.0),
+                          borderRadius: BorderRadius.circular(2),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 1.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(1),borderSide: BorderSide(color: Colors.white, width: 1.0),
+                          borderRadius: BorderRadius.circular(1),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 1.0),
                         ),
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        names.addName(name);
-                        setState(() {
-                          nameslist.add(name);
-                        });
-                        name = " ";
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
-                          shadowColor:
-                              MaterialStateProperty.all<Color>(Colors.white)),
-                      child: const Text("Save name")),
-                  ElevatedButton(
-                      onPressed: () {
-                        names.remove();
-                        setState(() {
-                          nameslist = [];
-                        });
-                        name = " ";
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
-                          shadowColor:
-                              MaterialStateProperty.all<Color>(Colors.white)),
-                      child: const Text("Clear")),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const App()));
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
-                          shadowColor:
-                              MaterialStateProperty.all<Color>(Colors.white)),
-                      child: const Text("Continue")),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          names.addName(name);
+                          setState(() {
+                            nameslist.add(name);
+                          });
+                          name = " ";
+                          inputcontroller.clear();
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                            shadowColor:
+                                MaterialStateProperty.all<Color>(Colors.white)),
+                        child: const Text("Add name")),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          names.remove();
+                          setState(() {
+                            nameslist = [];
+                          });
+                          name = " ";
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                            shadowColor:
+                                MaterialStateProperty.all<Color>(Colors.white)),
+                        child: const Text("Clear")),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const App()));
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                            shadowColor:
+                                MaterialStateProperty.all<Color>(Colors.white)),
+                        child: const Text("Continue")),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text(
+                      "Names: ",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
                   ListView.builder(
                       shrinkWrap: true,
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -135,7 +157,7 @@ class _NamePageState extends State<NamePage> {
                       itemCount: nameslist.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                            height: 50,
+                            height: 30,
                             child: Text(
                               nameslist[index],
                               style: const TextStyle(
